@@ -9,20 +9,25 @@ class Juego(val filas: Int, val columnas: Int, val nMinas: Int) {
     Utilidades.pintarMatrizEstados(tablero.casillas)
 
     val accion = Utilidades.leer()
-
+    val casilla = tablero.casillas(accion._2)(accion._3)
     accion match {
-      case ("r", _, _) => tablero.desvelar(List((accion._2, accion._3)))
-      case ("f", _, _) => tablero.marcar(accion._2, accion._3)
-      case ("q", _, _) => tablero.cuestionar(accion._2, accion._3)
-      case _           => println(s"El comando no es correcto, usa: r - desvelar, f - marcar, q- cuestionar")
+      case ("r", _, _) => tablero.descubrir(List(casilla))
+      case ("f", _, _) => tablero.marcar(casilla)
+      case _           => println(s"El comando no es correcto, usa: r - desvelar, f - marcar")
     }
 
-    if (tablero.victoria())
+    
+    if (victoria())
       println("Enhorabuena!!, Has ganado!")
-    else if (tablero.derrota()) {
+    else if (derrota()) {
       Utilidades.pintarMatrizValores(tablero.casillas)
       println("Fin de la partida, ha explotado una bomba!")
     } else
       jugar()
   }
+
+  def victoria(): Boolean = tablero.casillas.flatten.filter(p=>p.valor==9 && p.estado == Visible).size == tablero.minas.size
+  
+  def derrota(): Boolean = !tablero.casillas.flatten.filter(p=>p.valor==9 && p.estado == Visible).isEmpty
+
 }

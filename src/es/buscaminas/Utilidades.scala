@@ -17,8 +17,7 @@ object Utilidades {
       f.foreach(c => {
         c.estado match {
           case Oculta      => print("X|")
-          case Questionada => print("?|")
-          case Marcada     => print("p|")
+          case Marcada     => print("?|")
           case Visible     => print(c.valor + "|")
           case _           => print(c.valor + "|")
         }
